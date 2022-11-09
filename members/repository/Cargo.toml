@@ -9,4 +9,3 @@ edition = "2021"
 jfs = "0.7"
 serde = "1.0"
 model = { path = "../model"}
-once_cell = "1.16"
