@@ -4,9 +4,11 @@ args = [""]
 
 [tasks.migrate]
 command = "diesel"
-args = ["migration run"]
+workspace = false
+args = ["migration", "run"]
 
 [tasks.redo_migrate]
 command = "diesel"
-args = ["migration redo"]
+workspace = false
+args = ["migration", "redo"]
 
