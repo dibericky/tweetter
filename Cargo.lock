@@ -189,6 +189,7 @@ dependencies = [
  "jfs",
  "model",
  "serde",
+ "serde_json",
  "uuid 1.2.1",
 ]
 

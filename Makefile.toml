@@ -1,14 +1,15 @@
+[config]
+default_to_workspace = false
+
 [tasks.install]
 command = "./install.sh"
 args = [""]
 
 [tasks.migrate]
-command = "diesel"
-workspace = false
-args = ["migration", "run"]
+env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
 
-[tasks.redo_migrate]
-command = "diesel"
-workspace = false
-args = ["migration", "redo"]
+[tasks.redo-migrate]
+env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
 
+[tasks.setup-db]
+env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
