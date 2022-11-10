@@ -1,5 +1,5 @@
 use diesel::{RunQueryDsl};
-use model::{TweetData, Tweet};
+use model::{Tweet, TweetMessage, TweetID};
 
 use crate::{repo::{Repository}, postgres::{NewEvent}, schema};
 
@@ -8,17 +8,18 @@ use self::event::Event;
 pub mod event;
 
 pub enum Command {
-    AddTweet(TweetData)
+    AddTweet(Tweet),
+    EditTweet(TweetID, TweetMessage)
 }
 
 
 pub fn run_command(command: Command) -> Vec<Event> {
     match command {
         Command::AddTweet(data) => {
-            let id = uuid::Uuid::new_v4();
-            let id = id.to_string();
-            let tweet : Tweet = (id, data).into();
-            vec![Event::TweetAdded(tweet)]
+            vec![Event::TweetAdded(data)]
+        },
+        Command::EditTweet(id, msg) => {
+            vec![Event::TweetMessageEdited((id, msg).into())]
         },
     }
 }

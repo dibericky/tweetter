@@ -3,7 +3,6 @@ use diesel::prelude::*;
 use diesel::sql_types::Timestamptz;
 use dotenvy::dotenv;
 use serde::{Serialize, Deserialize};
-use uuid::Uuid;
 use std::env;
 use crate::event_sourcing::event::Event;
 use crate::schema::events;

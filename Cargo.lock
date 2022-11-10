@@ -33,6 +33,7 @@ dependencies = [
  "anyhow",
  "model",
  "repository",
+ "uuid 1.2.1",
 ]
 
 [[package]]
@@ -190,7 +191,6 @@ dependencies = [
  "model",
  "serde",
  "serde_json",
- "uuid 1.2.1",
 ]
 
 [[package]]

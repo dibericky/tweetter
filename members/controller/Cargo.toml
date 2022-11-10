@@ -9,3 +9,4 @@ edition = "2021"
 repository = { path = "../repository"}
 model = { path = "../model"} 
 anyhow = "1.0"
+uuid = {version = "1.2", features = ["v4"]}

@@ -1,12 +1,20 @@
 use anyhow::Result;
-use model::TweetData;
+use model::Tweet;
 use repository::{repo::Repository, tweet};
 
-pub fn add_tweet(repo: &mut Repository, author: &str, msg: &str) -> Result<()>{
-    let data = TweetData::new(author.to_string(), msg.to_string());
+pub fn add_tweet(repo: &mut Repository, author: &str, msg: &str) -> Result<String>{
+    let id = uuid::Uuid::new_v4();
+    let id = id.to_string();
+    let data = Tweet::new(id.clone(), author.to_string(), msg.to_string());
     println!("Tweeting {:?}", data);
     
     tweet::new(repo, data)?;
     println!("New tweet!");
+    Ok(id)
+}
+
+pub fn edit_tweet(repo: &mut Repository, id: &str, msg: &str) -> Result<()>{
+    tweet::edit(repo, id, msg)?;
+    println!("Edited tweet!");
     Ok(())
 }
