@@ -9,3 +9,7 @@ edition = "2021"
 jfs = "0.7"
 serde = "1.0"
 model = { path = "../model"}
+uuid = {version = "1.2", features = ["v4"]}
+anyhow = "1.0"
+diesel = { version = "2.0.0", features = ["postgres"] }
+dotenvy = "0.15"

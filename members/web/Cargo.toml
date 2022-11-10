@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 controller ={ path="../controller" }
 repository = {path = "../repository"}
+anyhow = "1.0"

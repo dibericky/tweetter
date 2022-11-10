@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 repository = { path = "../repository"}
 model = { path = "../model"} 
+anyhow = "1.0"

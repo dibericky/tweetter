@@ -1,0 +1,12 @@
+[tasks.install]
+command = "./install.sh"
+args = [""]
+
+[tasks.migrate]
+command = "diesel"
+args = ["migration run"]
+
+[tasks.redo_migrate]
+command = "diesel"
+args = ["migration redo"]
+

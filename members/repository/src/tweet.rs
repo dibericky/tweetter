@@ -1,9 +1,14 @@
-use model::{TweetData, Tweet};
+use anyhow::Result;
+use model::{TweetData};
 
-use crate::repo::{Repository, Table};
+use crate::{repo::{Repository}, event_sourcing};
 
-pub fn new(repo: &Repository, data: TweetData) -> Result<Tweet, String> {
-    let id = repo.add(Table::TWEETS, &data);
-    Ok((id, data).into())
+pub fn new(repo: &Repository, data: TweetData) -> Result<()> {
+    let cmd = event_sourcing::Command::AddTweet(data);
+    let events = event_sourcing::run_command(cmd);
+    
+    event_sourcing::store_events(repo, &events);
+
+    Ok(())
 }
 

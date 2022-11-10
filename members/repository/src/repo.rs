@@ -4,11 +4,13 @@ use serde::{Serialize,Deserialize};
 use jfs::Store;
 
 pub struct Repository {
-    tweets: Store
+    tweets: Store,
+    events: Store,
 }
 
 pub enum Table {
-    TWEETS
+    TWEETS,
+    EVENTS
 }
 
 pub fn new_store (name: Table) -> Store {
@@ -21,6 +23,7 @@ impl Display for Table {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Table::TWEETS => write!(f, "tweets"),
+            Table::EVENTS => write!(f, "events"),
         }
     }
 }
@@ -28,13 +31,15 @@ impl Display for Table {
 impl Repository {
     pub fn new() -> Self {
         Self {
-            tweets: new_store(Table::TWEETS)
+            tweets: new_store(Table::TWEETS),
+            events: new_store(Table::EVENTS),
         }
     }
 
     fn get_store(&self, table: Table) -> &Store {
         match table {
-            Table::TWEETS => &self.tweets
+            Table::TWEETS => &self.tweets,
+            Table::EVENTS => &self.events
         }
     }
 
