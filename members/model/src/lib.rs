@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Tweet {
-    id: String,
+    pub id: String,
     data: TweetData
 }
 

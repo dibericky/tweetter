@@ -2,6 +2,7 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use diesel::sql_types::Timestamptz;
 use dotenvy::dotenv;
+use serde::{Serialize, Deserialize};
 use uuid::Uuid;
 use std::env;
 use crate::event_sourcing::event::Event;
@@ -24,20 +25,20 @@ pub struct StoredEvent {
     created_at: Timestamptz
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = events)]
-pub struct NewEvent<'a> {
+pub struct NewEvent {
     pub payload: String,
-    pub event_type: &'a str,
+    pub event_type: String,
     pub aggregate_id: String
 }
 
-impl<'a> NewEvent<'a> {
-    pub fn new(event: &'a Event, aggregate_id: String) -> Self {
+impl NewEvent {
+    pub fn new(event: &Event) -> Self {
         Self {
             payload: serde_json::to_string(&event).unwrap(),
             event_type: event.event_type(),
-            aggregate_id
+            aggregate_id: event.aggregate_id()
         }
     }
 }

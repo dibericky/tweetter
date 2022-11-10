@@ -8,9 +8,15 @@ pub enum Event {
 }
 
 impl Event {
-    pub fn event_type(&self) -> &str {
+    pub fn event_type(&self) -> String {
         match self {
-            Event::TweetAdded(_) => "tweet-added",
+            Event::TweetAdded(_) => "tweet-added".to_owned(),
+        }
+    }
+
+    pub fn aggregate_id(&self) -> String {
+        match self {
+            Event::TweetAdded(payload) =>  payload.id.to_owned(),
         }
     }
 }

@@ -1,9 +1,7 @@
-use std::ops::Deref;
-
+use diesel::{RunQueryDsl};
 use model::{TweetData, Tweet};
-use serde::{Serialize, Deserialize};
 
-use crate::{repo::{Repository, Table}, postgres::StoredEvent};
+use crate::{repo::{Repository}, postgres::{NewEvent}, schema};
 
 use self::event::Event;
 
@@ -25,9 +23,13 @@ pub fn run_command(command: Command) -> Vec<Event> {
     }
 }
 
-pub fn store_events(repo: &Repository, events: &Vec<Event>) {
+pub fn store_events(repo: &mut Repository, events: &Vec<Event>) {
     for event in events {
         // let doc = StoredEvent::new(event.to_owned());
-        // repo.add(Table::EVENTS, &doc);
+        let doc = NewEvent::new(event);
+        diesel::insert_into(schema::events::table)
+            .values(&doc)
+            .execute(repo.get_connection())
+            .expect("Error saving new post");
     }
 }
