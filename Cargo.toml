@@ -5,5 +5,8 @@ members = [
     "members/view",
     "members/web",
     "members/model",
-    "members/repository"
+    "members/repository",
+    "members/message_broker",
+    "members/read_model",
+    "members/events"
 ]

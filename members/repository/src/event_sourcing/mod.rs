@@ -1,11 +1,8 @@
-use diesel::{RunQueryDsl};
+use anyhow::Result;
 use model::{Tweet, TweetMessage, TweetID};
+use crate::{repo::{Repository}, event_store::{self, NewEvent}};
+use events::Event;
 
-use crate::{repo::{Repository}, postgres::{NewEvent}, schema};
-
-use self::event::Event;
-
-pub mod event;
 
 pub enum Command {
     AddTweet(Tweet),
@@ -24,13 +21,11 @@ pub fn run_command(command: Command) -> Vec<Event> {
     }
 }
 
-pub fn store_events(repo: &mut Repository, events: &Vec<Event>) {
+pub fn store_events(repo: &mut Repository, events: &Vec<Event>) -> Result<()> {
     for event in events {
-        // let doc = StoredEvent::new(event.to_owned());
-        let doc = NewEvent::new(event);
-        diesel::insert_into(schema::events::table)
-            .values(&doc)
-            .execute(repo.get_connection())
-            .expect("Error saving new post");
+        let doc = NewEvent::new(event.to_owned());
+        event_store::save_event(repo, doc)?;
+        message_broker::publish(event)?;
     }
+    Ok(())
 }

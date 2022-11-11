@@ -6,4 +6,9 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: username
     ports:
-      - "8000:5432"
+      - 8000:5432
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
