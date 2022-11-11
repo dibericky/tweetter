@@ -491,7 +491,9 @@ version = "0.1.0"
 dependencies = [
  "amiquip",
  "anyhow",
+ "dotenvy",
  "events",
+ "serde_json",
 ]
 
 [[package]]
