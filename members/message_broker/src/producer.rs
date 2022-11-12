@@ -1,9 +1,9 @@
 use std::env;
 
 use amiquip::{Connection, Publish};
-use events::Event;
 use anyhow::Result;
 use dotenvy::dotenv;
+use events::Event;
 
 use crate::exchange;
 

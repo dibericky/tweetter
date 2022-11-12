@@ -1,6 +1,7 @@
-pub mod repo;
 pub(crate) mod event_sourcing;
 mod postgres;
+pub mod read_models;
+pub mod repo;
 mod schema;
 
 pub mod events {

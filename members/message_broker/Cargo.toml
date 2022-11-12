@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-amiquip = "0.4"
+amiquip = "0.4.2"
 events = { path = "../events"}
 anyhow = "1.0"
-dotenvy = "0.15"
+dotenvy = "0.15.6"
 serde_json = "1.0"

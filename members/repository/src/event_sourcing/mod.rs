@@ -1,25 +1,55 @@
+use crate::repo::Repository;
 use anyhow::Result;
-use model::{Tweet, TweetMessage, TweetID};
-use crate::{repo::{Repository}};
-use events::Event;
+use events::{Event, TweetAddedPayload, TweetMessageEditedPayload};
 
 mod event_store;
 pub mod tweet;
 
-pub enum Command {
-    AddTweet(Tweet),
-    EditTweet(TweetID, TweetMessage)
+pub struct AddTweetPayload {
+    id: String,
+    author: String,
+    message: String,
 }
 
+impl AddTweetPayload {
+    pub fn new(id: String, message: String, author: String) -> Self {
+        Self {
+            id,
+            author,
+            message,
+        }
+    }
+}
+
+pub struct EditTweetMessagePayload {
+    id: String,
+    message: String,
+}
+
+impl EditTweetMessagePayload {
+    pub fn new(id: &str, message: &str) -> Self {
+        Self {
+            message: message.to_owned(),
+            id: id.to_owned(),
+        }
+    }
+}
+
+pub enum Command {
+    AddTweet(AddTweetPayload),
+    EditTweetMessage(EditTweetMessagePayload),
+}
 
 pub fn run_command(command: Command) -> Vec<Event> {
     match command {
         Command::AddTweet(data) => {
-            vec![Event::TweetAdded(data)]
-        },
-        Command::EditTweet(id, msg) => {
-            vec![Event::TweetMessageEdited((id, msg).into())]
-        },
+            let event = TweetAddedPayload::new(data.id, data.message, data.author);
+            vec![Event::TweetAdded(event)]
+        }
+        Command::EditTweetMessage(data) => {
+            let event = TweetMessageEditedPayload::new(&data.id, &data.message);
+            vec![Event::TweetMessageEdited(event)]
+        }
     }
 }
 

@@ -1,18 +1,20 @@
 use std::env;
 
-use amiquip::{Connection, QueueDeclareOptions, ConsumerOptions, ConsumerMessage, FieldTable};
+use amiquip::{Connection, ConsumerMessage, ConsumerOptions, FieldTable, QueueDeclareOptions};
 use anyhow::Result;
 use dotenvy::dotenv;
 use events::Event;
 
 use crate::exchange::{self, get_routing_key_prefix};
 
-
-pub fn consume<F>(queue: &str, handler: F) -> Result<()> where F: Fn(&Event) -> Result<()>{
+pub fn consume<F>(queue: &str, handler: F) -> Result<()>
+where
+    F: Fn(&Event) -> Result<()>,
+{
     dotenv().ok();
 
     let rabbit_conn_url = env::var("RABBITMQ_CONNECTION").expect("RABBITMQ_CONNECTION must be set");
-    
+
     // Open connection.
     let mut connection = Connection::insecure_open(&rabbit_conn_url)?;
 
@@ -21,7 +23,11 @@ pub fn consume<F>(queue: &str, handler: F) -> Result<()> where F: Fn(&Event) -> 
 
     let queue = channel.queue_declare(queue, QueueDeclareOptions::default())?;
     let exchange = exchange::declare(&channel)?;
-    queue.bind(&exchange, format!("{}.#", get_routing_key_prefix()), FieldTable::new())?;
+    queue.bind(
+        &exchange,
+        format!("{}.#", get_routing_key_prefix()),
+        FieldTable::new(),
+    )?;
     // Start a consumer.
     let consumer = queue.consume(ConsumerOptions::default())?;
     println!("Waiting for messages. Press Ctrl-C to exit.");
@@ -36,13 +42,12 @@ pub fn consume<F>(queue: &str, handler: F) -> Result<()> where F: Fn(&Event) -> 
                         println!("Received: {:?}", &body);
                         handler(&event)?;
                         consumer.ack(delivery)?;
-                    },
+                    }
                     Err(_) => {
                         println!("Failed to parse message {}", &body);
                         consumer.nack(delivery, false)?;
                     }
                 };
-                
             }
             other => {
                 println!("Consumer ended: {:?}", other);
@@ -52,6 +57,5 @@ pub fn consume<F>(queue: &str, handler: F) -> Result<()> where F: Fn(&Event) -> 
     }
 
     connection.close()?;
-    Ok(())                                                                 
-
+    Ok(())
 }

@@ -1,5 +1,5 @@
-use diesel::{PgConnection};
-use crate::{postgres::get_connection};
+use crate::postgres::get_connection;
+use diesel::PgConnection;
 
 pub struct Repository {
     conn: PgConnection,

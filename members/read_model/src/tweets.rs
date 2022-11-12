@@ -1,15 +1,24 @@
+use std::sync::{Arc, Mutex};
+
 use anyhow::Result;
 use events::Event;
-use repository::repo::Repository;
+use repository::{
+    read_models::{
+        self,
+        tweets::{InsertTweet, UpdateTweet},
+    },
+    repo::Repository,
+};
 
-pub fn update(_repo: &Repository, event: &Event) -> Result<()> {
+pub fn update(repo: &mut Arc<Mutex<Repository>>, event: &Event) -> Result<()> {
     match event {
         Event::TweetAdded(payload) => {
-
-        },
+            let doc = InsertTweet::from(payload);
+            read_models::tweets::insert(repo, doc)
+        }
         Event::TweetMessageEdited(payload) => {
-            
-        },
-    };
-    Ok(())
+            let doc = UpdateTweet::from(payload);
+            read_models::tweets::update(repo, &payload.id, doc)
+        }
+    }
 }
