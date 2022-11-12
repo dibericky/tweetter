@@ -9,3 +9,4 @@ edition = "2021"
 anyhow = "1.0"
 repository = { path = "../repository" }
 events = { path = "../events"}
+message_broker ={ path= "../message_broker" }

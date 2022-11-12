@@ -1,7 +1,9 @@
 use anyhow::Result;
 use model::{Tweet, TweetMessage, TweetID};
-use crate::{repo::{Repository}, event_store::{self, NewEvent}};
+use crate::{repo::{Repository}};
 use events::Event;
+
+mod event_store;
 
 
 pub enum Command {
@@ -23,7 +25,7 @@ pub fn run_command(command: Command) -> Vec<Event> {
 
 pub fn store_events(repo: &mut Repository, events: &Vec<Event>) -> Result<()> {
     for event in events {
-        let doc = NewEvent::new(event.to_owned());
+        let doc = event_store::InsertEvent::from(event.to_owned());
         event_store::save_event(repo, doc)?;
         message_broker::publish(event)?;
     }

@@ -1,7 +1,7 @@
 use model::{Tweet, TweetID, TweetMessage};
 use serde::{Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(tag="type")]
 pub enum Event {
     TweetAdded(TweetAddedPayload),
@@ -10,7 +10,7 @@ pub enum Event {
 
 pub type TweetAddedPayload = Tweet;
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct TweetMessageEditedPayload {
     id: TweetID,
     message: TweetMessage
