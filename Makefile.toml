@@ -6,10 +6,16 @@ command = "./install.sh"
 args = [""]
 
 [tasks.migrate]
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["members/repository"]}
+dependencies = [
+    { name = "migrate", path= "./members/repository"}
+]
 
 [tasks.redo-migrate]
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["members/repository"]}
+dependencies = [
+    { name = "redo-migrate", path= "./members/repository"}
+]
 
 [tasks.setup-db]
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["members/repository"]}
+dependencies = [
+    { name = "setup-db", path= "./members/repository"}
+]
