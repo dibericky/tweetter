@@ -19,3 +19,12 @@ dependencies = [
 dependencies = [
     { name = "setup-db", path= "./members/repository"}
 ]
+
+[tasks.run-read-model]
+command = "cargo"
+args = ["run", "-p", "read_model"]
+
+[tasks.run-web]
+command = "cargo"
+args = ["run", "-p", "web"]
+
