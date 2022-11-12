@@ -3,7 +3,7 @@ use repository::repo::Repository;
 
 fn main() -> Result<()> {
     let mut repo = Repository::default();
-    // controller::add_tweet(&mut repo, "@dibericky",  "Hi there!".to_owned())?;
+    // controller::add_tweet(&mut repo, "@dibericky",  "Hi there!")?;
 
     controller::edit_tweet(
         &mut repo,
