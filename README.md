@@ -37,7 +37,7 @@ Now that your postgresql db is up, you need to run migration to configure it pro
 cargo make setup-db
 ```
 
-Note: this command uses diesel-cli. If you have not yet install it, run:
+Note: this command uses diesel-cli. If you have not yet installed it, run:
 
 ```bash
 ./install.sh
