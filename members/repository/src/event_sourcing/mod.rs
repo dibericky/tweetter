@@ -4,7 +4,7 @@ use crate::{repo::{Repository}};
 use events::Event;
 
 mod event_store;
-
+pub mod tweet;
 
 pub enum Command {
     AddTweet(Tweet),

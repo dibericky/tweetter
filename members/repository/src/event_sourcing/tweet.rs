@@ -8,7 +8,7 @@ pub fn new(repo: &mut Repository, data: Tweet) -> Result<()> {
     let events = event_sourcing::run_command(cmd);
     
     event_sourcing::store_events(repo, &events)?;
-
+    
     Ok(())
 }
 

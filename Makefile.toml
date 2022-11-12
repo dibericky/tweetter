@@ -6,10 +6,10 @@ command = "./install.sh"
 args = [""]
 
 [tasks.migrate]
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
+env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["members/repository"]}
 
 [tasks.redo-migrate]
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
+env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["members/repository"]}
 
 [tasks.setup-db]
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
+env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["members/repository"]}
