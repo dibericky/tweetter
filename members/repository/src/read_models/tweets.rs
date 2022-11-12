@@ -5,7 +5,7 @@ use chrono::{DateTime, Utc};
 use diesel::{AsChangeset, Identifiable, Insertable, Queryable, RunQueryDsl};
 use events::{TweetAddedPayload, TweetMessageEditedPayload};
 
-use crate::schema::tweets::dsl as Fields;
+
 use crate::{
     repo::Repository,
     schema::{self, tweets as TweetsSchema},

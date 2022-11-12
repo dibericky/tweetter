@@ -2,7 +2,7 @@ use anyhow::Result;
 use repository::repo::Repository;
 
 fn main() -> Result<()> {
-    let mut repo = Repository::new();
+    let mut repo = Repository::default();
     // controller::add_tweet(&mut repo, "@dibericky",  "Hi there!".to_owned())?;
 
     controller::edit_tweet(

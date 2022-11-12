@@ -16,3 +16,9 @@ impl Repository {
         &mut self.conn
     }
 }
+
+impl Default for Repository {
+    fn default() -> Self {
+        Self::new()
+    }
+}
