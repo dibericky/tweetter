@@ -5,7 +5,7 @@ use events::Event;
 use repository::{
     read_models::{
         self,
-        tweets::{InsertTweet, UpdateTweet},
+        tweets::{Tweet, UpdateTweet},
     },
     repo::Repository,
 };
@@ -13,7 +13,7 @@ use repository::{
 pub fn update(repo: &mut Arc<Mutex<Repository>>, event: &Event) -> Result<()> {
     match event {
         Event::TweetAdded(payload) => {
-            let doc = InsertTweet::from(payload);
+            let doc = Tweet::from(payload);
             read_models::tweets::insert(repo, doc)
         }
         Event::TweetMessageEdited(payload) => {

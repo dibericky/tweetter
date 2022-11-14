@@ -26,5 +26,5 @@ args = ["run", "-p", "read_model"]
 
 [tasks.run-web]
 command = "cargo"
-args = ["run", "-p", "web"]
+args = ["run", "-p", "web-server"]
 

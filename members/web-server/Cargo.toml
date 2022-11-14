@@ -1,5 +1,5 @@
 [package]
-name = "web"
+name = "web-server"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,3 +7,7 @@ edition = "2021"
 controller ={ path="../controller" }
 repository = {path = "../repository"}
 anyhow = "1.0"
+actix-web = "4.2"
+async-graphql={version="4", features = ["chrono"]}
+async-graphql-actix-web="4"
+chrono="0.4.23"

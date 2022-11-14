@@ -3,7 +3,7 @@
 members = [
     "members/controller",
     "members/view",
-    "members/web",
+    "members/web-server",
     "members/repository",
     "members/message_broker",
     "members/read_model",
