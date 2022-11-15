@@ -1,17 +1,19 @@
 [tasks.setup-db]
 command = "diesel"
 workspace = true
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
 args = ["setup"]
 
 [tasks.migrate]
 command = "diesel"
 workspace = true
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
 args = ["migration", "run"]
 
 [tasks.redo-migrate]
 command = "diesel"
 workspace = true
-env = { CARGO_MAKE_WORKSPACE_INCLUDE_MEMBERS = ["repository"]}
-args = ["migration", "redo"]
+args = ["migration", "redo", "--all"]
+
+[tasks.new-migration]
+command = "diesel"
+workspace = true
+args = ["migration", "generate", "${@}"]

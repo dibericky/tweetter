@@ -2,20 +2,21 @@ use crate::repo::Repository;
 use anyhow::Result;
 use events::{Event, TweetAddedPayload, TweetMessageEditedPayload};
 
+mod aggregate;
 mod event_store;
 pub mod tweet;
 
 pub struct AddTweetPayload {
     id: String,
-    author: String,
+    author_id: String,
     message: String,
 }
 
 impl AddTweetPayload {
-    pub fn new(id: String, message: String, author: String) -> Self {
+    pub fn new(id: String, message: String, author_id: String) -> Self {
         Self {
             id,
-            author,
+            author_id,
             message,
         }
     }
@@ -23,13 +24,15 @@ impl AddTweetPayload {
 
 pub struct EditTweetMessagePayload {
     id: String,
+    author_id: String,
     message: String,
 }
 
 impl EditTweetMessagePayload {
-    pub fn new(id: &str, message: &str) -> Self {
+    pub fn new(id: &str, author_id: &str, message: &str) -> Self {
         Self {
             message: message.to_owned(),
+            author_id: author_id.to_owned(),
             id: id.to_owned(),
         }
     }
@@ -43,11 +46,11 @@ pub enum Command {
 pub fn run_command(command: Command) -> Vec<Event> {
     match command {
         Command::AddTweet(data) => {
-            let event = TweetAddedPayload::new(data.id, data.message, data.author);
+            let event = TweetAddedPayload::new(data.id, data.message, data.author_id);
             vec![Event::TweetAdded(event)]
         }
         Command::EditTweetMessage(data) => {
-            let event = TweetMessageEditedPayload::new(&data.id, &data.message);
+            let event = TweetMessageEditedPayload::new(&data.id, &data.author_id, &data.message);
             vec![Event::TweetMessageEdited(event)]
         }
     }

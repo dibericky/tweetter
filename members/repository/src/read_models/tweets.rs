@@ -14,7 +14,7 @@ use crate::{
 #[diesel(table_name = TweetsSchema)]
 pub struct Tweet {
     pub id: String,
-    pub author: String,
+    pub author_id: String,
     pub message: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
@@ -74,7 +74,7 @@ impl From<&TweetAddedPayload> for Tweet {
     fn from(tweet: &TweetAddedPayload) -> Self {
         Self {
             id: tweet.id.to_owned(),
-            author: tweet.author.to_owned(),
+            author_id: tweet.author_id.to_owned(),
             message: tweet.message.to_owned(),
             created_at: tweet.created_at().to_owned(),
             updated_at: tweet.updated_at().to_owned(),

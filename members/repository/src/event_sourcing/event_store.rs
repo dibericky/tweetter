@@ -1,8 +1,12 @@
 use crate::schema::events as EventsSchema;
 use crate::{repo::Repository, schema};
 use anyhow::Result;
-use diesel::{Insertable, RunQueryDsl};
+use chrono::{DateTime, Utc};
+use diesel::sql_types::Integer;
+use diesel::ExpressionMethods;
+use diesel::{Insertable, QueryDsl, Queryable, RunQueryDsl};
 use events::Event;
+use schema::events::dsl as Dsl;
 use serde::{Deserialize, Serialize};
 
 pub fn save_event(repo: &mut Repository, doc: InsertEvent) -> Result<usize> {
@@ -12,14 +16,33 @@ pub fn save_event(repo: &mut Repository, doc: InsertEvent) -> Result<usize> {
         .map_err(|_| anyhow::anyhow!("Failed to store event"))
 }
 
-// #[derive(Queryable)]
-// pub struct StoredEvent {
-//     id: i32,
-//     payload: String,
-//     event_type: String,
-//     aggregate_id: String,
-//     created_at: DateTime<Utc>,
-// }
+pub fn get_events_by(
+    repo: &mut Repository,
+    aggregate_id: &str,
+    aggregate_type: &str,
+) -> Result<Vec<Event>> {
+    let row_events: Vec<StoredEvent> = schema::events::dsl::events
+        .filter(Dsl::aggregate_id.eq(aggregate_id))
+        .filter(Dsl::aggregate_type.eq(aggregate_type))
+        .get_results(repo.get_connection())
+        .map_err(|_| anyhow::anyhow!("Failed to store event"))?;
+
+    Ok(row_events
+        .into_iter()
+        .map(|row| serde_json::from_str::<Event>(&row.payload).unwrap())
+        .collect::<Vec<_>>())
+}
+
+#[derive(Queryable, Serialize, Deserialize)]
+#[diesel(table_name = EventsSchema)]
+pub struct StoredEvent {
+    pub id: i32,
+    pub payload: String,
+    pub event_type: String,
+    pub aggregate_id: String,
+    pub aggregate_type: String,
+    pub created_at: DateTime<Utc>,
+}
 
 #[derive(Insertable, Serialize, Deserialize)]
 #[diesel(table_name = EventsSchema)]
@@ -27,6 +50,7 @@ pub struct InsertEvent {
     pub payload: String,
     pub event_type: String,
     pub aggregate_id: String,
+    pub aggregate_type: String,
 }
 
 impl From<Event> for InsertEvent {
@@ -35,6 +59,7 @@ impl From<Event> for InsertEvent {
             payload: serde_json::to_string(&event).unwrap(),
             event_type: event.event_type(),
             aggregate_id: event.aggregate_id(),
+            aggregate_type: event.aggregate_type(),
         }
     }
 }

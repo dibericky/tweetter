@@ -28,5 +28,7 @@ pub fn get_routing_key(event: &Event) -> String {
     match event {
         Event::TweetAdded(_) => format!("{}.tweets.added", prefix),
         Event::TweetMessageEdited(_) => format!("{}.tweets.edited", prefix),
+        Event::UserProfileAdded(_) => todo!(),
+        Event::UserProfileEdited(_) => todo!(),
     }
 }

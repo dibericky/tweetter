@@ -23,15 +23,20 @@ pub struct MutationRoot;
 #[Object]
 
 impl MutationRoot {
-    pub async fn add_tweet(&self, user: String, message: String) -> Result<String> {
+    pub async fn add_tweet(&self, user_id: String, message: String) -> Result<String> {
         let mut repo = Repository::default();
-        let id = controller::add_tweet(&mut repo, &user, &message)?;
+        let id = controller::add_tweet(&mut repo, &user_id, &message)?;
         Ok(id)
     }
 
-    pub async fn edit_tweet(&self, tweet_id: String, message: String) -> Result<bool> {
+    pub async fn edit_tweet(
+        &self,
+        tweet_id: String,
+        user_id: String,
+        message: String,
+    ) -> Result<bool> {
         let mut repo = Repository::default();
-        controller::edit_tweet(&mut repo, &tweet_id, &message)?;
+        controller::edit_tweet(&mut repo, &tweet_id, &user_id, &message)?;
         Ok(true)
     }
 }

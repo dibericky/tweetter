@@ -3,5 +3,6 @@ CREATE TABLE events (
   payload VARCHAR NOT NULL,
   event_type VARCHAR NOT NULL,
   aggregate_id VARCHAR NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT Now() 
+  aggregate_type VARCHAR NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT Now() 
 )
