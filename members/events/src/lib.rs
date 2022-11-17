@@ -8,7 +8,7 @@ pub use user_profile::*;
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(tag = "type")]
 pub enum Event {
-    TweetAdded(tweets::TweetAddedPayload),
+    TweetAdded(tweets::UserTweetAddedPayload),
     TweetMessageEdited(tweets::TweetMessageEditedPayload),
     UserProfileAdded(user_profile::UserProfileAddedPayload),
     UserProfileEdited(user_profile::UserProfileEditedPayload),
@@ -26,8 +26,8 @@ impl Event {
 
     pub fn aggregate_id(&self) -> String {
         match self {
-            Event::TweetAdded(payload) => payload.author_id.to_owned(),
-            Event::TweetMessageEdited(payload) => payload.author_id.to_owned(),
+            Event::TweetAdded(payload) => payload.id.to_owned(),
+            Event::TweetMessageEdited(payload) => payload.id.to_owned(),
             Event::UserProfileAdded(_) => todo!(),
             Event::UserProfileEdited(_) => todo!(),
         }

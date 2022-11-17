@@ -6,10 +6,10 @@ use uuid::Uuid;
 
 pub fn add_tweet(repo: &mut Repository, author_id: &str, msg: &str) -> Result<String> {
     println!("{} is tweeting {:?}", author_id, msg);
-    let id = Uuid::new_v4().to_string();
-    repository::events::tweet::new(repo, id.to_owned(), author_id.to_owned(), msg.to_owned())?;
-    println!("New tweet! {}", &id);
-    Ok(id)
+    let tweet_id = Uuid::new_v4().to_string();
+    repository::events::tweet::new(repo, tweet_id.to_owned(), author_id.to_owned(), msg.to_owned())?;
+    println!("New tweet! {}", &tweet_id);
+    Ok(tweet_id)
 }
 
 pub fn edit_tweet(repo: &mut Repository, id: &str, author_id: &str, msg: &str) -> Result<()> {

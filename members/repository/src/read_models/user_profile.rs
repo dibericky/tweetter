@@ -3,7 +3,6 @@ use std::sync::{Arc, Mutex};
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use diesel::{AsChangeset, Identifiable, Insertable, QueryDsl, Queryable, RunQueryDsl};
-use events::TweetAddedPayload;
 
 use crate::{
     repo::Repository,

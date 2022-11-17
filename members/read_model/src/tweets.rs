@@ -18,7 +18,7 @@ pub fn update(repo: &mut Arc<Mutex<Repository>>, event: &Event) -> Result<()> {
         }
         Event::TweetMessageEdited(payload) => {
             let doc = UpdateTweet::from(payload);
-            read_models::tweets::update(repo, &payload.id, doc)
+            read_models::tweets::update(repo, &payload.tweet_id, doc)
         }
         Event::UserProfileAdded(_) => todo!(),
         Event::UserProfileEdited(_) => todo!(),

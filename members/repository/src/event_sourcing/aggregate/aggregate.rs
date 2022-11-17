@@ -5,6 +5,8 @@ use crate::{event_sourcing::event_store, repo::Repository};
 
 pub trait Aggregate {
     type State;
+    type Command;
+    type Event;
 
     fn aggregate_type() -> &'static str;
 
@@ -25,4 +27,6 @@ pub trait Aggregate {
     }
 
     fn handle_event(state: Self::State, event: &Event) -> Self::State;
+
+    fn run_command(state: Option<Self::State>, command: Self::Command) -> Vec<Self::Event>;
 }

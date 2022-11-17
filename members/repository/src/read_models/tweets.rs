@@ -3,11 +3,12 @@ use std::sync::{Arc, Mutex};
 use anyhow::Result;
 use chrono::{DateTime, Utc};
 use diesel::{AsChangeset, Identifiable, Insertable, QueryDsl, Queryable, RunQueryDsl};
-use events::{TweetAddedPayload, TweetMessageEditedPayload};
+use events::{UserTweetAddedPayload, TweetMessageEditedPayload};
+use diesel::ExpressionMethods;
 
 use crate::{
     repo::Repository,
-    schema::{self, tweets as TweetsSchema},
+    schema::{self, tweets::{self as TweetsSchema}},
 };
 
 #[derive(Insertable, Queryable)]
@@ -20,27 +21,11 @@ pub struct Tweet {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Identifiable, AsChangeset)]
+#[derive(Queryable, AsChangeset)]
 #[diesel(table_name = TweetsSchema)]
-struct UpdateSetTweet {
-    pub id: String,
-    pub message: String,
-    pub updated_at: DateTime<Utc>,
-}
-
 pub struct UpdateTweet {
     pub message: String,
     pub updated_at: DateTime<Utc>,
-}
-
-impl From<(&str, UpdateTweet)> for UpdateSetTweet {
-    fn from((id, data): (&str, UpdateTweet)) -> Self {
-        Self {
-            id: id.to_owned(),
-            message: data.message,
-            updated_at: data.updated_at,
-        }
-    }
 }
 
 pub fn insert(repo: &mut Arc<Mutex<Repository>>, doc: Tweet) -> Result<()> {
@@ -60,21 +45,20 @@ pub fn get_by_id(repo: &mut Arc<Mutex<Repository>>, id: &str) -> Result<Tweet> {
         .map_err(|_| anyhow::anyhow!("Failed to get tweet"))
 }
 
-pub fn update(repo: &mut Arc<Mutex<Repository>>, id: &str, doc: UpdateTweet) -> Result<()> {
-    let values: UpdateSetTweet = (id, doc).into();
+pub fn update(repo: &mut Arc<Mutex<Repository>>, id: &str, values: UpdateTweet) -> Result<()> {
     let mut repo_locked = repo.lock().unwrap();
-    diesel::update(schema::tweets::table)
-        .set(&values)
+    diesel::update(schema::tweets::dsl::tweets.filter(TweetsSchema::dsl::id.eq(id)))
+        .set(values)
         .execute(repo_locked.get_connection())
         .map_err(|_| anyhow::anyhow!("Failed to update tweet"))?;
     Ok(())
 }
 
-impl From<&TweetAddedPayload> for Tweet {
-    fn from(tweet: &TweetAddedPayload) -> Self {
+impl From<&UserTweetAddedPayload> for Tweet {
+    fn from(tweet: &UserTweetAddedPayload) -> Self {
         Self {
-            id: tweet.id.to_owned(),
-            author_id: tweet.author_id.to_owned(),
+            id: tweet.tweet_id.to_owned(),
+            author_id: tweet.id.to_owned(),
             message: tweet.message.to_owned(),
             created_at: tweet.created_at().to_owned(),
             updated_at: tweet.updated_at().to_owned(),

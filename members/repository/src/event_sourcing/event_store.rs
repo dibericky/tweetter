@@ -2,7 +2,6 @@ use crate::schema::events as EventsSchema;
 use crate::{repo::Repository, schema};
 use anyhow::Result;
 use chrono::{DateTime, Utc};
-use diesel::sql_types::Integer;
 use diesel::ExpressionMethods;
 use diesel::{Insertable, QueryDsl, Queryable, RunQueryDsl};
 use events::Event;
