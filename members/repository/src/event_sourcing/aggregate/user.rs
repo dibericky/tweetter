@@ -1,8 +1,8 @@
-use events::{Event, UserTweetAddedPayload, TweetMessageEditedPayload};
+use events::{Event, TweetMessageEditedPayload, UserTweetAddedPayload};
 
 use crate::event_sourcing::command::user::Command;
 
-use super::aggregate::Aggregate;
+use super::Aggregate;
 
 #[derive(Default)]
 pub struct UserState {
@@ -28,7 +28,6 @@ impl Aggregate for UserAggregate {
         match event {
             Event::TweetAdded(_) => Self::State {
                 num_tweet: state.num_tweet + 1,
-                ..state
             },
             Event::TweetMessageEdited(_) => state,
             Event::UserProfileAdded(_) => todo!(),
@@ -43,7 +42,8 @@ impl Aggregate for UserAggregate {
                 vec![Event::TweetAdded(event)]
             }
             Command::EditTweetMessage(data) => {
-                let event = TweetMessageEditedPayload::new(&data.author_id, &data.tweet_id, &data.message);
+                let event =
+                    TweetMessageEditedPayload::new(&data.author_id, &data.tweet_id, &data.message);
                 vec![Event::TweetMessageEdited(event)]
             }
         }

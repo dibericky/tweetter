@@ -3,9 +3,9 @@ use anyhow::Result;
 use events::Event;
 
 mod aggregate;
+mod command;
 mod event_store;
 pub mod tweet;
-mod command;
 
 pub fn store_events(repo: &mut Repository, events: &Vec<Event>) -> Result<()> {
     for event in events {

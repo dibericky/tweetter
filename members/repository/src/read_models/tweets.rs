@@ -2,13 +2,16 @@ use std::sync::{Arc, Mutex};
 
 use anyhow::Result;
 use chrono::{DateTime, Utc};
-use diesel::{AsChangeset, Identifiable, Insertable, QueryDsl, Queryable, RunQueryDsl};
-use events::{UserTweetAddedPayload, TweetMessageEditedPayload};
 use diesel::ExpressionMethods;
+use diesel::{AsChangeset, Insertable, QueryDsl, Queryable, RunQueryDsl};
+use events::{TweetMessageEditedPayload, UserTweetAddedPayload};
 
 use crate::{
     repo::Repository,
-    schema::{self, tweets::{self as TweetsSchema}},
+    schema::{
+        self,
+        tweets::{self as TweetsSchema},
+    },
 };
 
 #[derive(Insertable, Queryable)]
