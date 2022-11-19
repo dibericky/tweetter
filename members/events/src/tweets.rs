@@ -32,14 +32,14 @@ impl UserTweetAddedPayload {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct TweetMessageEditedPayload {
+pub struct UserTweetMessageEditedPayload {
     pub id: String,
     pub tweet_id: String,
     pub message: String,
     updated_at: DateTime<Utc>,
 }
 
-impl TweetMessageEditedPayload {
+impl UserTweetMessageEditedPayload {
     pub fn new(id: &str, tweet_id: &str, message: &str) -> Self {
         Self {
             tweet_id: tweet_id.to_owned(),

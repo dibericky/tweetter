@@ -4,7 +4,7 @@ use anyhow::Result;
 use chrono::{DateTime, Utc};
 use diesel::ExpressionMethods;
 use diesel::{AsChangeset, Insertable, QueryDsl, Queryable, RunQueryDsl};
-use events::{TweetMessageEditedPayload, UserTweetAddedPayload};
+use events::{UserTweetMessageEditedPayload, UserTweetAddedPayload};
 
 use crate::{
     repo::Repository,
@@ -69,8 +69,8 @@ impl From<&UserTweetAddedPayload> for Tweet {
     }
 }
 
-impl From<&TweetMessageEditedPayload> for UpdateTweet {
-    fn from(data: &TweetMessageEditedPayload) -> Self {
+impl From<&UserTweetMessageEditedPayload> for UpdateTweet {
+    fn from(data: &UserTweetMessageEditedPayload) -> Self {
         Self {
             message: data.message.to_owned(),
             updated_at: data.updated_at().to_owned(),

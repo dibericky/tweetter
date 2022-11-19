@@ -1,4 +1,4 @@
-use events::{Event, TweetMessageEditedPayload, UserTweetAddedPayload};
+use events::{Event, UserTweetMessageEditedPayload, UserTweetAddedPayload};
 
 use crate::event_sourcing::command::user::Command;
 
@@ -26,10 +26,10 @@ impl Aggregate for UserAggregate {
 
     fn handle_event(state: Self::State, event: &Self::Event) -> Self::State {
         match event {
-            Event::TweetAdded(_) => Self::State {
+            Event::UserTweetAdded(_) => Self::State {
                 num_tweet: state.num_tweet + 1,
             },
-            Event::TweetMessageEdited(_) => state,
+            Event::UserTweetMessageEdited(_) => state,
             Event::UserProfileAdded(_) => todo!(),
             Event::UserProfileEdited(_) => todo!(),
         }
@@ -39,12 +39,12 @@ impl Aggregate for UserAggregate {
         match command {
             Command::AddTweet(data) => {
                 let event = UserTweetAddedPayload::new(data.author_id, data.message, data.tweet_id);
-                vec![Event::TweetAdded(event)]
+                vec![Event::UserTweetAdded(event)]
             }
             Command::EditTweetMessage(data) => {
                 let event =
-                    TweetMessageEditedPayload::new(&data.author_id, &data.tweet_id, &data.message);
-                vec![Event::TweetMessageEdited(event)]
+                    UserTweetMessageEditedPayload::new(&data.author_id, &data.tweet_id, &data.message);
+                vec![Event::UserTweetMessageEdited(event)]
             }
         }
     }

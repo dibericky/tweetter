@@ -12,12 +12,12 @@ use repository::{
 
 pub fn update(repo: &mut Arc<Mutex<Repository>>, event: &Event) -> Result<()> {
     match event {
-        Event::TweetAdded(payload) => {
+        Event::UserTweetAdded(payload) => {
             let doc = Tweet::from(payload);
             read_models::tweets::insert(repo, doc)?;
             // read_models::user_profile::update(repo, &payload.author_id, doc)?;
         }
-        Event::TweetMessageEdited(payload) => {
+        Event::UserTweetMessageEdited(payload) => {
             let doc = UpdateTweet::from(payload);
             read_models::tweets::update(repo, &payload.id, doc)?;
         }

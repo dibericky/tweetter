@@ -8,8 +8,8 @@ pub use user_profile::*;
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(tag = "type")]
 pub enum Event {
-    TweetAdded(tweets::UserTweetAddedPayload),
-    TweetMessageEdited(tweets::TweetMessageEditedPayload),
+    UserTweetAdded(tweets::UserTweetAddedPayload),
+    UserTweetMessageEdited(tweets::UserTweetMessageEditedPayload),
     UserProfileAdded(user_profile::UserProfileAddedPayload),
     UserProfileEdited(user_profile::UserProfileEditedPayload),
 }
@@ -17,8 +17,8 @@ pub enum Event {
 impl Event {
     pub fn event_type(&self) -> String {
         match self {
-            Event::TweetAdded(_) => "tweet-added".to_owned(),
-            Event::TweetMessageEdited(_) => "tweet-message-edited".to_owned(),
+            Event::UserTweetAdded(_) => "user-tweet-added".to_owned(),
+            Event::UserTweetMessageEdited(_) => "user-tweet-message-edited".to_owned(),
             Event::UserProfileAdded(_) => todo!(),
             Event::UserProfileEdited(_) => todo!(),
         }
@@ -26,8 +26,8 @@ impl Event {
 
     pub fn aggregate_id(&self) -> String {
         match self {
-            Event::TweetAdded(payload) => payload.id.to_owned(),
-            Event::TweetMessageEdited(payload) => payload.id.to_owned(),
+            Event::UserTweetAdded(payload) => payload.id.to_owned(),
+            Event::UserTweetMessageEdited(payload) => payload.id.to_owned(),
             Event::UserProfileAdded(_) => todo!(),
             Event::UserProfileEdited(_) => todo!(),
         }
@@ -35,8 +35,8 @@ impl Event {
 
     pub fn aggregate_type(&self) -> String {
         match self {
-            Event::TweetAdded(_) => "users".to_owned(),
-            Event::TweetMessageEdited(_) => "users".to_owned(),
+            Event::UserTweetAdded(_) => "users".to_owned(),
+            Event::UserTweetMessageEdited(_) => "users".to_owned(),
             Event::UserProfileAdded(_) => "users".to_owned(),
             Event::UserProfileEdited(_) => "users".to_owned(),
         }
