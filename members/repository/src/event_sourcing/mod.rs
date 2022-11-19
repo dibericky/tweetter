@@ -6,6 +6,7 @@ mod aggregate;
 mod command;
 mod event_store;
 pub mod tweet;
+pub mod user;
 
 pub fn store_events(repo: &mut Repository, events: &Vec<Event>) -> Result<()> {
     for event in events {

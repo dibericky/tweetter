@@ -20,6 +20,11 @@ dependencies = [
     { name = "setup-db", path= "./members/repository"}
 ]
 
+[tasks.reset-db]
+dependencies = [
+    { name = "reset-db", path= "./members/repository"}
+]
+
 [tasks.run-read-model]
 command = "cargo"
 args = ["run", "-p", "read_model"]
@@ -28,3 +33,6 @@ args = ["run", "-p", "read_model"]
 command = "cargo"
 args = ["run", "-p", "web-server"]
 
+[tasks.clippy]
+command = "cargo"
+args = ["clippy", "--", "-D", "warnings"]

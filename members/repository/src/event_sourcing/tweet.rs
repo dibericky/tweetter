@@ -20,7 +20,7 @@ pub fn new(
         author_id, message, tweet_id,
     ));
     let state = UserAggregate::load(repo, &aggregate_id)?;
-    let events = UserAggregate::run_command(state, cmd);
+    let events = UserAggregate::run_command(state, cmd)?;
 
     event_sourcing::store_events(repo, &events)?;
 
@@ -33,7 +33,7 @@ pub fn edit(repo: &mut Repository, tweet_id: &str, author_id: &str, msg: &str) -
         author_id, tweet_id, msg,
     ));
     let state = UserAggregate::load(repo, aggregate_id)?;
-    let events = UserAggregate::run_command(state, cmd);
+    let events = UserAggregate::run_command(state, cmd)?;
 
     event_sourcing::store_events(repo, &events)?;
 

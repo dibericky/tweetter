@@ -30,7 +30,19 @@ impl EditTweetMessagePayload {
     }
 }
 
+pub struct CreateUserPayload {
+    pub user_id: String,
+    pub nickname: String,
+}
+
+impl CreateUserPayload {
+    pub fn new(user_id: String, nickname: String) -> Self {
+        Self { user_id, nickname }
+    }
+}
+
 pub enum Command {
+    CreateUser(CreateUserPayload),
     AddTweet(AddTweetPayload),
     EditTweetMessage(EditTweetMessagePayload),
 }

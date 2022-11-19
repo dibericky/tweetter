@@ -14,13 +14,16 @@ pub fn update(repo: &mut Arc<Mutex<Repository>>, event: &Event) -> Result<()> {
     match event {
         Event::UserTweetAdded(payload) => {
             let doc = Tweet::from(payload);
-            read_models::tweets::insert(repo, doc)
+            read_models::tweets::insert(repo, doc)?;
         }
         Event::UserTweetMessageEdited(payload) => {
             let doc = UpdateTweet::from(payload);
-            read_models::tweets::update(repo, &payload.tweet_id, doc)
+            read_models::tweets::update(repo, &payload.tweet_id, doc)?;
         }
-        Event::UserProfileAdded(_) => todo!(),
-        Event::UserProfileEdited(_) => todo!(),
-    }
+        Event::UserCreated(_) => {}
+        Event::UserEdited(_) => {}
+        Event::UserNumberTweetIncremented(_) => {}
+    };
+
+    Ok(())
 }

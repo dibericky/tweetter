@@ -39,6 +39,12 @@ impl MutationRoot {
         controller::edit_tweet(&mut repo, &tweet_id, &user_id, &message)?;
         Ok(true)
     }
+
+    pub async fn create_user(&self, nickname: String) -> Result<String> {
+        let mut repo = Repository::default();
+        let id = controller::create_user(&mut repo, &nickname)?;
+        Ok(id)
+    }
 }
 
 pub type TweetterSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;

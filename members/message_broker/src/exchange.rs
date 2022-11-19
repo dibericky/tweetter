@@ -24,11 +24,16 @@ pub fn get_routing_key_prefix() -> String {
 }
 
 pub fn get_routing_key(event: &Event) -> String {
-    let prefix = get_routing_key_prefix();
     match event {
-        Event::UserTweetAdded(_) => format!("{}.tweets.added", prefix),
-        Event::UserTweetMessageEdited(_) => format!("{}.tweets.edited", prefix),
-        Event::UserProfileAdded(_) => todo!(),
-        Event::UserProfileEdited(_) => todo!(),
+        Event::UserTweetAdded(_) => routing_key("user.tweets.added"),
+        Event::UserTweetMessageEdited(_) => routing_key("user.tweets.edited"),
+        Event::UserCreated(_) => routing_key("user.created"),
+        Event::UserEdited(_) => routing_key("user.edited"),
+        Event::UserNumberTweetIncremented(_) => routing_key("user.details.num_tweets.incremented"),
     }
+}
+
+fn routing_key(name: &str) -> String {
+    let prefix = get_routing_key_prefix();
+    format!("{prefix}.{name}")
 }

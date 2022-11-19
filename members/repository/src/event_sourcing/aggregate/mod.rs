@@ -30,5 +30,5 @@ pub trait Aggregate {
 
     fn handle_event(state: Self::State, event: &Event) -> Self::State;
 
-    fn run_command(state: Option<Self::State>, command: Self::Command) -> Vec<Self::Event>;
+    fn run_command(state: Option<Self::State>, command: Self::Command) -> Result<Vec<Self::Event>>;
 }

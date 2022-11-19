@@ -17,3 +17,9 @@ args = ["migration", "redo", "--all"]
 command = "diesel"
 workspace = true
 args = ["migration", "generate", "${@}"]
+
+[tasks.reset-db]
+command = "diesel"
+workspace = true
+args = ["database", "reset"]
+

@@ -9,7 +9,7 @@ fn main() -> Result<()> {
     message_broker::consume("tweets", |event: &Event| {
         let mut repo = repo.clone();
         read_model::tweets::update(&mut repo, event)?;
-
+        read_model::users::update(&mut repo, event)?;
         Ok(())
     })?;
     Ok(())

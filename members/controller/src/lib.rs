@@ -13,7 +13,7 @@ pub fn add_tweet(repo: &mut Repository, author_id: &str, msg: &str) -> Result<St
         author_id.to_owned(),
         msg.to_owned(),
     )?;
-    println!("New tweet! {}", &tweet_id);
+    println!("New tweet! {tweet_id}");
     Ok(tweet_id)
 }
 
@@ -21,6 +21,13 @@ pub fn edit_tweet(repo: &mut Repository, id: &str, author_id: &str, msg: &str) -
     repository::events::tweet::edit(repo, id, author_id, msg)?;
     println!("Edited tweet!");
     Ok(())
+}
+
+pub fn create_user(repo: &mut Repository, nickname: &str) -> Result<String> {
+    let user_id = Uuid::new_v4().to_string();
+    repository::events::user::new(repo, &user_id, nickname)?;
+    println!("User created! {user_id}");
+    Ok(user_id)
 }
 
 pub fn get_by_id(repo: &mut Arc<Mutex<Repository>>, id: &str) -> Result<Tweet> {

@@ -6,8 +6,7 @@ pub struct UserTweetAddedPayload {
     pub id: String,
     pub message: String,
     pub tweet_id: String,
-    created_at: DateTime<Utc>,
-    updated_at: DateTime<Utc>,
+    occurred_on: DateTime<Utc>,
 }
 
 impl UserTweetAddedPayload {
@@ -17,17 +16,12 @@ impl UserTweetAddedPayload {
             id,
             message,
             tweet_id,
-            created_at: now,
-            updated_at: now,
+            occurred_on: now,
         }
     }
 
-    pub fn created_at(&self) -> &DateTime<Utc> {
-        &self.created_at
-    }
-
-    pub fn updated_at(&self) -> &DateTime<Utc> {
-        &self.updated_at
+    pub fn occurred_on(&self) -> &DateTime<Utc> {
+        &self.occurred_on
     }
 }
 
@@ -36,7 +30,7 @@ pub struct UserTweetMessageEditedPayload {
     pub id: String,
     pub tweet_id: String,
     pub message: String,
-    updated_at: DateTime<Utc>,
+    occurred_on: DateTime<Utc>,
 }
 
 impl UserTweetMessageEditedPayload {
@@ -45,11 +39,32 @@ impl UserTweetMessageEditedPayload {
             tweet_id: tweet_id.to_owned(),
             id: id.to_string(),
             message: message.to_owned(),
-            updated_at: Utc::now(),
+            occurred_on: Utc::now(),
         }
     }
 
-    pub fn updated_at(&self) -> &DateTime<Utc> {
-        &self.updated_at
+    pub fn occurred_on(&self) -> &DateTime<Utc> {
+        &self.occurred_on
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct UserNumberTweetIncrementedPayload {
+    pub id: String,
+    pub num_tweet: i32,
+    occurred_on: DateTime<Utc>,
+}
+
+impl UserNumberTweetIncrementedPayload {
+    pub fn new(id: &str, num_tweet: i32) -> Self {
+        Self {
+            id: id.to_string(),
+            num_tweet,
+            occurred_on: Utc::now(),
+        }
+    }
+
+    pub fn occurred_on(&self) -> &DateTime<Utc> {
+        &self.occurred_on
     }
 }
