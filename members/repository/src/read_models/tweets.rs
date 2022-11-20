@@ -60,6 +60,14 @@ pub fn update(repo: &mut Arc<Mutex<Repository>>, id: &str, values: UpdateTweet) 
     Ok(())
 }
 
+pub fn get_by_author_id(repo: &mut Arc<Mutex<Repository>>, author_id: &str) -> Result<Vec<Tweet>> {
+    let mut repo_locked = repo.lock().unwrap();
+    schema::tweets::dsl::tweets
+        .filter(TweetsSchema::dsl::author_id.eq(author_id))
+        .get_results(repo_locked.get_connection())
+        .map_err(|_| anyhow::anyhow!("Failed to get tweet"))
+}
+
 impl From<&UserTweetAddedPayload> for Tweet {
     fn from(tweet: &UserTweetAddedPayload) -> Self {
         Self {

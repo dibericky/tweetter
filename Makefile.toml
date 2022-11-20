@@ -36,3 +36,7 @@ args = ["run", "-p", "web-server"]
 [tasks.clippy]
 command = "cargo"
 args = ["clippy", "--", "-D", "warnings"]
+
+[tasks.run-docker]
+command = "docker-compose"
+args = ["up"]

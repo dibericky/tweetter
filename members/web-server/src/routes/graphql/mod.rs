@@ -1,20 +1,37 @@
 use std::sync::{Arc, Mutex};
 
 use async_graphql::{EmptySubscription, Object, Result, Schema};
-use repository::repo::Repository;
+use repository::{repo::Repository};
 
-use self::tweet::Tweet;
+use self::{tweet::Tweet as GraphqlTweet, user::User};
 
 mod tweet;
+mod user;
 
 pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
-    pub async fn tweet(&self, tweet_id: String) -> Result<Tweet> {
+    pub async fn tweet(&self, tweet_id: String) -> Result<GraphqlTweet> {
         let mut repo = Arc::new(Mutex::new(Repository::default()));
-        let tweet = controller::get_by_id(&mut repo, &tweet_id)?;
+        let tweet = controller::get_tweet(&mut repo, &tweet_id)?;
         Ok(tweet.into())
+    }
+
+    pub async fn user(&self, user_id: String) -> Result<User> {
+        let mut repo = Arc::new(Mutex::new(Repository::default()));
+        let user = controller::get_user(&mut repo, &user_id)?;
+        Ok(user.into())
+    }
+
+    pub async fn user_tweets(&self, author_id: String) -> Result<Vec<GraphqlTweet>> {
+        let mut repo = Arc::new(Mutex::new(Repository::default()));
+        let tweets = controller::get_tweets_by_author_id(&mut repo, &author_id)?;
+        let tweets = tweets
+            .into_iter()
+            .map(GraphqlTweet::from)
+            .collect::<Vec<_>>();
+        Ok(tweets)
     }
 }
 
