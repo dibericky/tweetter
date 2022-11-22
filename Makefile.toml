@@ -5,6 +5,11 @@ default_to_workspace = false
 command = "./install.sh"
 args = [""]
 
+[tasks.run-app]
+dependencies = [
+    { name = "run-app", path= "./app"}
+]
+
 [tasks.migrate]
 dependencies = [
     { name = "migrate", path= "./backend/repository"}

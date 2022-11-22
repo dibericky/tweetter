@@ -1,0 +1,3 @@
+[tasks.run-app]
+command = "npm"
+args = ["run", "start"]
