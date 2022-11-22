@@ -10,9 +10,9 @@ This repository contains 2 binary:
 
 ## How repository is structured
 
-- members: contains the cargo workspaces
+- app: contains the frontend
+- backend: contains the backend workspaces
     - **web**: it's the entrypoint for the web server exposing API
-    - **view**: contains the logic for the View
     - **repository**: contains the whole logic for communicate with the database. It's the only workspace knowing that we're using Postgresql. Contains also a submodule *event_sourcing* responsible for handling the Command & Aggregate of the CQRS pattern.
     - **read_model**: contains the binary responsible for updating the read model based on the event consumed
     - **message_broker**: contains the rabbitmq consumer e producer

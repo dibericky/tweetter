@@ -1,11 +1,11 @@
 [workspace]
 
 members = [
-    "members/controller",
-    "members/view",
-    "members/web-server",
-    "members/repository",
-    "members/message_broker",
-    "members/read_model",
-    "members/events"
+    "backend/controller",
+    "backend/web-server",
+    "backend/repository",
+    "backend/message_broker",
+    "backend/read_model",
+    "backend/events",
+    "app"
 ]

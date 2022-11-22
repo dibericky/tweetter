@@ -7,22 +7,22 @@ args = [""]
 
 [tasks.migrate]
 dependencies = [
-    { name = "migrate", path= "./members/repository"}
+    { name = "migrate", path= "./backend/repository"}
 ]
 
 [tasks.redo-migrate]
 dependencies = [
-    { name = "redo-migrate", path= "./members/repository"}
+    { name = "redo-migrate", path= "./backend/repository"}
 ]
 
 [tasks.setup-db]
 dependencies = [
-    { name = "setup-db", path= "./members/repository"}
+    { name = "setup-db", path= "./backend/repository"}
 ]
 
 [tasks.reset-db]
 dependencies = [
-    { name = "reset-db", path= "./members/repository"}
+    { name = "reset-db", path= "./backend/repository"}
 ]
 
 [tasks.run-read-model]
