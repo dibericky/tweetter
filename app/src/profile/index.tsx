@@ -1,13 +1,13 @@
 import React from "react"
-import {useGetUser, QueryState} from "./client"
+import {useGetUser, QueryState, User, Tweet} from "./client"
 import Content from "./content"
 import Picture from "./picture"
 
 type Props = {
-    nickname: String,
-    following: Number,
-    follower: Number
+    user: User,
+    userTweets: Tweet[]
 }
+
 function Profile(props: Props) {
     return (
         <div className="w-[990px] flex">
@@ -24,9 +24,7 @@ export default function() {
     }
     return (
         <Profile
-            nickname={userData.payload.nickname}
-            follower={userData.payload.follower}
-            following={userData.payload.following}
+            {...userData.payload}
         />
     )
 }

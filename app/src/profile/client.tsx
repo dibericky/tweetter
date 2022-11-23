@@ -13,7 +13,8 @@ query($userId: String!) {
       numTweets,
       nickname,
       following,
-      follower
+      follower,
+      createdAt
     }
     userTweets(authorId:$userId) {
       id,
@@ -30,19 +31,28 @@ export enum QueryState {
     Solved = "solved"
 }
 
-type User = {
+export type Tweet = {
+    id: String,
+    authorId: String,
+    message: String,
+    updatedAt: string,
+}
+
+export type User = {
     id: String,
     numTweets: Number,
     nickname: String,
     following: Number,
-    follower: Number
+    follower: Number,
+    createdAt: string
 }
 
 type Response = {
     user: User
+    userTweets: Tweet[]
 }
 
-export type UserData = {status: QueryState.Loading, payload: null} | {status: QueryState.Solved, payload: User } 
+export type UserData = {status: QueryState.Loading, payload: null} | {status: QueryState.Solved, payload: Response } 
 
 
 export function useGetUser() {
@@ -55,7 +65,7 @@ export function useGetUser() {
             })
             .then((result) => {
                 let data : Response = result.data;
-                setUserData({status: QueryState.Solved, payload: data.user})
+                setUserData({status: QueryState.Solved, payload: data})
             });
     }, []);
 
