@@ -11,3 +11,4 @@ actix-web = "4.2"
 async-graphql={version="4", features = ["chrono"]}
 async-graphql-actix-web="4"
 chrono="0.4.23"
+actix-cors="0.6.4"

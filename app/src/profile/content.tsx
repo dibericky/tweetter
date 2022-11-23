@@ -1,7 +1,9 @@
 import Picture from "./picture";
 
 type Props = {
-    nickname: String
+    nickname: String,
+    following: Number,
+    follower: Number
 }
 
 export default function Content(props: Props) {
@@ -32,10 +34,10 @@ export default function Content(props: Props) {
                 </div>
                 <div className="flex gap-5">
                     <FollowDetail label={'following'}>
-                        <Number value={"767"} />
+                        <Number value={props.following.toString()} />
                     </FollowDetail>
                     <FollowDetail label={'follower'}>
-                        <Number value={"827"} />
+                        <Number value={props.follower.toString()} />
                     </FollowDetail>
                 </div>
             </div>  

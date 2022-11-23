@@ -9,7 +9,7 @@ function App() {
         <Header />
       </div>
       <div className="grow">
-        <Profile nickname={"ricky"} />
+        <Profile />
       </div>
     </main>
   );
