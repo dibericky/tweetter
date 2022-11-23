@@ -4,8 +4,8 @@ import Profile from './profile';
 
 function App() {
   return (
-    <main className="flex">
-      <div>
+    <main className="flex justify-around">
+      <div className="grow justify-end flex align-end">
         <Header />
       </div>
       <div className="grow">

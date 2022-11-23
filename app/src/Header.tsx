@@ -13,8 +13,8 @@ function items() : Array<{label: String}> {
 
 export default function Header() {
     return (
-        <header>
-            <nav className="flex flex-col gap-2">
+        <header className="w-[275px]">
+            <nav className="flex flex-col gap-2 items-start">
                 {
                     items().map(({label}, i) => {
                         return (
