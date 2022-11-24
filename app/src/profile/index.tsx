@@ -1,5 +1,6 @@
 import React from "react"
-import {useGetUser, QueryState, User, Tweet} from "./client"
+import { useLoaderData } from "react-router-dom"
+import {User, Tweet, Response} from "./client"
 import Content from "./content"
 import Picture from "./picture"
 
@@ -18,13 +19,10 @@ function Profile(props: Props) {
 }
 
 export default function() {
-    const userData = useGetUser()
-    if (userData.status === QueryState.Loading) {
-        return <h2>Loading...</h2>
-    }
+    const userData: Response = useLoaderData() as any as Response
     return (
         <Profile
-            {...userData.payload}
+            {...userData}
         />
     )
 }

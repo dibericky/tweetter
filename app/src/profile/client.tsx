@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 import React, { useState } from 'react';
+import { Params } from 'react-router-dom';
 
 const client = new ApolloClient({
     uri: 'http://localhost:8080/graphql/',
@@ -9,16 +10,19 @@ const client = new ApolloClient({
 const query = `
 query($userId: String!) {
     user(userId:$userId) {
-     id,
+         id,
       numTweets,
       nickname,
-      following,
       follower,
+      following,
       createdAt
     }
     userTweets(authorId:$userId) {
       id,
-      authorId,
+      author {
+        id,
+        nickname
+      },
       message,
       createdAt,
       updatedAt
@@ -26,48 +30,31 @@ query($userId: String!) {
   }
 `
 
-export enum QueryState {
-    Loading = "loading",
-    Solved = "solved"
-}
-
 export type Tweet = {
     id: String,
-    authorId: String,
+    author: Author,
     message: String,
     updatedAt: string,
 }
 
+type Author = { id: String, nickname: String }
+
 export type User = {
     id: String,
-    numTweets: Number,
     nickname: String,
+    numTweets: Number,
     following: Number,
     follower: Number,
     createdAt: string
 }
 
-type Response = {
+export type Response = {
     user: User
     userTweets: Tweet[]
 }
 
-export type UserData = {status: QueryState.Loading, payload: null} | {status: QueryState.Solved, payload: Response } 
-
-
-export function useGetUser() {
-    const [userData, setUserData] = useState<UserData>({status: QueryState.Loading, payload: null})
-    React.useEffect(() => {
-        client
-            .query({
-                query: gql(query),
-                variables: {userId: "7154c2f0-f265-4d1f-a54d-1fb2d628abe4"}
-            })
-            .then((result) => {
-                let data : Response = result.data;
-                setUserData({status: QueryState.Solved, payload: data})
-            });
-    }, []);
-
-   return userData
+export async function loadUserData({params} : {params: Params<string>}) : Promise<Response>{
+    let userId = params.userId;
+    const response = await client.query({query: gql(query), variables: {userId}});
+    return response.data
 }

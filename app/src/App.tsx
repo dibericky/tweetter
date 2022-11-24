@@ -1,17 +1,14 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Header from './Header';
+import Page from './Page';
 import Profile from './profile';
 
 function App() {
   return (
-    <main className="flex justify-around">
-      <div className="grow justify-end flex align-end">
-        <Header />
-      </div>
-      <div className="grow">
-        <Profile />
-      </div>
-    </main>
+    <Page>
+        <Outlet />
+    </Page>
   );
 }
 
