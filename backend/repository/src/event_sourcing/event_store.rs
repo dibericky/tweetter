@@ -24,7 +24,18 @@ pub fn get_events_by(
         .filter(Dsl::aggregate_id.eq(aggregate_id))
         .filter(Dsl::aggregate_type.eq(aggregate_type))
         .get_results(repo.get_connection())
-        .map_err(|_| anyhow::anyhow!("Failed to store event"))?;
+        .map_err(|_| anyhow::anyhow!("Failed to get events"))?;
+
+    Ok(row_events
+        .into_iter()
+        .map(|row| serde_json::from_str::<Event>(&row.payload).unwrap())
+        .collect::<Vec<_>>())
+}
+
+pub fn get_all_events(repo: &mut Repository) -> Result<Vec<Event>> {
+    let row_events: Vec<StoredEvent> = schema::events::dsl::events
+        .get_results(repo.get_connection())
+        .map_err(|_| anyhow::anyhow!("Failed to get events"))?;
 
     Ok(row_events
         .into_iter()

@@ -1,0 +1,1 @@
+ALTER TABLE tweets DROP CONSTRAINT fk_author_id

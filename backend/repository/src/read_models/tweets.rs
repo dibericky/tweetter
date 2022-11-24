@@ -11,14 +11,25 @@ use crate::{
     schema::{
         self,
         tweets::{self as TweetsSchema},
+        user_profile::{self as UserSchema},
     },
 };
+
+use super::user_profile::UserProfile;
 
 #[derive(Insertable, Queryable)]
 #[diesel(table_name = TweetsSchema)]
 pub struct Tweet {
     pub id: String,
     pub author_id: String,
+    pub message: String,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+pub struct TweetDetail {
+    pub id: String,
+    pub author: UserProfile,
     pub message: String,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
@@ -60,12 +71,20 @@ pub fn update(repo: &mut Arc<Mutex<Repository>>, id: &str, values: UpdateTweet) 
     Ok(())
 }
 
-pub fn get_by_author_id(repo: &mut Arc<Mutex<Repository>>, author_id: &str) -> Result<Vec<Tweet>> {
+pub fn get_by_author_id(
+    repo: &mut Arc<Mutex<Repository>>,
+    author_id: &str,
+) -> Result<Vec<TweetDetail>> {
     let mut repo_locked = repo.lock().unwrap();
-    schema::tweets::dsl::tweets
+
+    println!("GET BY AUTHOR ID");
+    let result: Vec<(Tweet, UserProfile)> = schema::tweets::dsl::tweets
+        .inner_join(UserSchema::table)
         .filter(TweetsSchema::dsl::author_id.eq(author_id))
         .get_results(repo_locked.get_connection())
-        .map_err(|_| anyhow::anyhow!("Failed to get tweet"))
+        .map_err(|_| anyhow::anyhow!("Failed to get tweet"))?;
+
+    Ok(result.into_iter().map(TweetDetail::from).collect())
 }
 
 impl From<&UserTweetAddedPayload> for Tweet {
@@ -85,6 +104,18 @@ impl From<&UserTweetMessageEditedPayload> for UpdateTweet {
         Self {
             message: data.message.to_owned(),
             updated_at: data.occurred_on().to_owned(),
+        }
+    }
+}
+
+impl From<(Tweet, UserProfile)> for TweetDetail {
+    fn from((tweet, user): (Tweet, UserProfile)) -> Self {
+        Self {
+            id: tweet.id,
+            author: user,
+            message: tweet.message,
+            created_at: tweet.created_at,
+            updated_at: tweet.updated_at,
         }
     }
 }

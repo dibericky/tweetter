@@ -1,9 +1,12 @@
 use std::sync::{Arc, Mutex};
 
 use async_graphql::{EmptySubscription, Object, Result, Schema};
-use repository::{repo::Repository};
+use repository::repo::Repository;
 
-use self::{tweet::Tweet as GraphqlTweet, user::User};
+use self::{
+    tweet::{Tweet as GraphqlTweet, TweetDetail as GraphqlTweetDetail},
+    user::User,
+};
 
 mod tweet;
 mod user;
@@ -24,12 +27,12 @@ impl QueryRoot {
         Ok(user.into())
     }
 
-    pub async fn user_tweets(&self, author_id: String) -> Result<Vec<GraphqlTweet>> {
+    pub async fn user_tweets(&self, author_id: String) -> Result<Vec<GraphqlTweetDetail>> {
         let mut repo = Arc::new(Mutex::new(Repository::default()));
         let tweets = controller::get_tweets_by_author_id(&mut repo, &author_id)?;
         let tweets = tweets
             .into_iter()
-            .map(GraphqlTweet::from)
+            .map(GraphqlTweetDetail::from)
             .collect::<Vec<_>>();
         Ok(tweets)
     }

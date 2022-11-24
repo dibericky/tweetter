@@ -8,6 +8,8 @@ mod event_store;
 pub mod tweet;
 pub mod user;
 
+pub use event_store::get_all_events;
+
 pub fn store_events(repo: &mut Repository, events: &Vec<Event>) -> Result<()> {
     for event in events {
         let doc = event_store::InsertEvent::from(event.to_owned());

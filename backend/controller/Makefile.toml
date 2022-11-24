@@ -1,0 +1,3 @@
+[tasks.dev-populate]
+command = "cargo"
+args = ["run", "--bin", "populate"]

@@ -45,3 +45,15 @@ args = ["clippy", "--", "-D", "warnings"]
 [tasks.run-docker]
 command = "docker-compose"
 args = ["up"]
+
+[tasks.reload-events]
+dependencies = [
+    { name = "reload", path= "./backend/read_model"}
+]
+
+[tasks.dev-populate]
+dependencies = [
+    "reset-db",
+    { name = "dev-populate", path= "./backend/controller"},
+    "reload-events"
+]

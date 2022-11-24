@@ -5,6 +5,7 @@ pub mod repo;
 mod schema;
 
 pub mod events {
+    pub use crate::event_sourcing::get_all_events;
     pub use crate::event_sourcing::tweet;
     pub use crate::event_sourcing::user;
 }

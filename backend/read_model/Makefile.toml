@@ -1,0 +1,4 @@
+[tasks.reload]
+command = "cargo"
+workspace = true
+args = ["run", "--bin", "reload"]
