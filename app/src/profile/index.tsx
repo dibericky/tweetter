@@ -1,8 +1,6 @@
-import React from "react"
 import { useLoaderData } from "react-router-dom"
 import {User, Tweet, Response} from "./client"
 import Content from "./content"
-import Picture from "./picture"
 
 type Props = {
     user: User,
